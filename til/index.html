@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>笔记 TIL — Tommy</title>
+<meta name="description" content="Today I Learned：三五句话记一个具体的技术细节，随时更新。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/til/" class="on">笔记</a>
+      <a href="/tools/">工具</a>
+      <a href="/games/">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">TIL · Today I Learned</p>
+    <h1>笔记</h1>
+    <p class="lead">三五句话记一个具体的东西。比长文容易坚持，也更容易被搜到。目前 6 条。</p>
+
+    <p class="section-title">2026</p>
+
+    <article class="til" id="ssh-l">
+      <div class="til-head">
+        <h2>用 ssh -L 把远程端口搬到本地</h2>
+        <time datetime="2026-10-24">2026-10-24</time>
+      </div>
+      <p>服务器上起了个调试用的服务，不想为它开防火墙端口，就在本地直接看。</p>
+      <pre><code>ssh -N -L 8080:localhost:8000 me@server
+# 然后本地访问 http://localhost:8080</code></pre>
+      <p class="til-note">用在：远程调试 Web 服务、连只监听 127.0.0.1 的数据库。加 <code>-N</code> 表示只转发、不开 shell。</p>
+    </article>
+
+    <article class="til" id="git-log-s">
+      <div class="til-head">
+        <h2>找出是哪次提交动了这行代码</h2>
+        <time datetime="2026-10-22">2026-10-22</time>
+      </div>
+      <p>接手一个老项目，某行代码看起来莫名其妙，想知道当初为什么这么写。</p>
+      <pre><code>git log -S"超时时间" --oneline -- path/to/file.py
+git log -L 120,140:path/to/file.py</code></pre>
+      <p class="til-note">用在：查某段逻辑的来历。<code>-S</code> 按内容差异搜，<code>-L</code> 直接看某几行的演变历史。</p>
+    </article>
+
+    <article class="til" id="http-server">
+      <div class="til-head">
+        <h2>一行命令临时起个静态服务</h2>
+        <time datetime="2026-10-20">2026-10-20</time>
+      </div>
+      <p>页面里用了 <code>/style.css</code> 这种根路径，直接双击打开会丢样式，必须走 http。</p>
+      <pre><code>python -m http.server 8000
+python -m http.server 8000 --directory ./public</code></pre>
+      <p class="til-note">用在：本地预览静态站、给同事临时分享一个目录（记得别在公网机器上随便开）。</p>
+    </article>
+
+    <article class="til" id="du-sh">
+      <div class="til-head">
+        <h2>du -sh 找出是谁把磁盘吃光了</h2>
+        <time datetime="2026-10-17">2026-10-17</time>
+      </div>
+      <p>磁盘莫名其妙 100%，第一件事是按目录大小排序。</p>
+      <pre><code>du -sh ./* 2>/dev/null | sort -h | tail -10
+du -h -d 1 . | sort -h | tail</code></pre>
+      <p class="til-note">用在：清理 pip / npm / docker 缓存。我遇到最多的是 <code>~/.cache</code> 和 docker 的 overlay 目录。</p>
+    </article>
+
+    <article class="til" id="curl-headers">
+      <div class="til-head">
+        <h2>curl 只看响应头和耗时</h2>
+        <time datetime="2026-10-14">2026-10-14</time>
+      </div>
+      <p>排查线上接口慢，开浏览器太重，直接看响应头更快。</p>
+      <pre><code>curl -I https://example.com
+curl -o /dev/null -s -w '%{http_code}  %{time_total}s\n' https://example.com</code></pre>
+      <p class="til-note">用在：确认状态码、看缓存头、量一次请求到底花了几秒。<code>-I</code> 只发 HEAD。</p>
+    </article>
+
+    <article class="til" id="sqlite-eqp">
+      <div class="til-head">
+        <h2>SQLite 用 EXPLAIN QUERY PLAN 看有没有全表扫描</h2>
+        <time datetime="2026-10-11">2026-10-11</time>
+      </div>
+      <p>表到了几万行之后查询突然变慢，先确认是不是没走索引。</p>
+      <pre><code>EXPLAIN QUERY PLAN
+SELECT * FROM messages WHERE room_id = 1 ORDER BY id DESC LIMIT 50;
+
+CREATE INDEX idx_messages_room_id_id ON messages(room_id, id DESC);</code></pre>
+      <p class="til-note">用在：输出里出现 <code>SCAN</code> 就是全表扫，出现 <code>SEARCH ... USING INDEX</code> 才是走了索引。复合索引的列顺序要和查询条件、排序一致。</p>
+    </article>
+
+    <p class="back"><a href="/posts/">← 看长文章</a></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/tools/">工具 →</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
