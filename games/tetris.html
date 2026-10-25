@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>俄罗斯方块 — Tommy</title>
+<meta name="description" content="最经典的那一个，方块落下来，消行得分。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/novels/">小说</a>
+      <a href="/til/">笔记</a>
+      <a href="/tools/">工具</a>
+      <a href="/games/" class="on">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow"><a href="/games/" style="color:var(--muted);text-decoration:none">游戏</a> / 开放源码</p>
+    <h1>俄罗斯方块</h1>
+    <p class="lead">最经典的那一个，方块落下来，消行得分。</p>
+    <p style="margin:16px 0 26px;font-size:13.5px;color:var(--muted)">
+      作者 Jake Gordon · 许可 MIT · <a href="https://github.com/jakesgordon/javascript-tetris">源码</a>
+    </p>
+
+    <div style="width:min(100%,640px)">
+      <div id="stage" style="position:relative;width:100%;aspect-ratio:4 / 3;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface)">
+        <button class="btn primary" id="play"
+                data-src="/games/vendor/tetris/index.html"
+                data-title="俄罗斯方块"
+                style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;font-size:16px;display:flex;flex-direction:column;gap:7px;align-items:center;justify-content:center">
+          ▶ 开始游戏<span style="font-size:12px;font-weight:400;opacity:.8">约 100 KB</span>
+        </button>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:18px">操作：空格开始／直接落下，← → 移动，↑ 旋转，↓ 加速下落，Esc 结束。</p>
+    <p class="hint">
+      游戏本身由 Jake Gordon 以 MIT 授权发布，原样部署在 <code>/games/vendor/tetris/</code>，
+      点开才加载。有问题请去<a href="https://github.com/jakesgordon/javascript-tetris">原仓库</a>反馈。
+    </p>
+
+    <p class="back"><a href="/games/">← 其他游戏</a></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/games/">游戏 →</a></span>
+  </footer>
+
+</div>
+<script src="/games/play.js"></script>
+</body>
+</html>
