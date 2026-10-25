@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工具箱 — Tommy</title>
+<meta name="description" content="JSON 格式化、时间戳转换、Base64 编解码、密码生成、SHA-256、颜色转换、文本统计。全部本地运行。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/tools/" class="on">工具</a>
+      <a href="/games/">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">工具箱</p>
+    <h1>小工具</h1>
+    <p class="lead">几个平时会用到的小东西。全部在浏览器本地计算，输入的内容不会发到任何服务器。</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-panel="json">JSON</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="time">时间戳</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="codec">编码</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="pwd">密码</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="hash">哈希</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="color">颜色</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="text">文本</button>
+    </div>
+
+    <!-- JSON -->
+    <section class="panel" id="panel-json">
+      <h2>JSON 格式化</h2>
+      <p class="hint">粘贴 JSON，格式化、压缩或校验。报错会指出出错的位置。</p>
+      <textarea id="json-in" class="field" spellcheck="false" placeholder='{"name":"Tommy","tags":["code","writing"],"n":42}'>{"name":"Tommy","tags":["code","writing"],"n":42,"nested":{"ok":true}}</textarea>
+      <div class="row">
+        <button class="btn primary" data-json="format">格式化</button>
+        <button class="btn" data-json="minify">压缩</button>
+        <button class="btn" data-json="validate">只校验</button>
+        <button class="btn" data-copy="#json-out">复制结果</button>
+      </div>
+      <div class="out" id="json-out"></div>
+    </section>
+
+    <!-- 时间戳 -->
+    <section class="panel" id="panel-time" hidden>
+      <h2>时间戳转换</h2>
+      <p class="hint">支持秒和毫秒（自动判断）。也可以把日期反向转成时间戳。</p>
+      <div class="row">
+        <input id="ts-in" class="field" inputmode="numeric" placeholder="例如 1793000000 或 1793000000000">
+        <button class="btn primary" id="ts-now">用当前时间</button>
+      </div>
+      <div class="out" id="ts-out"></div>
+      <h3 style="margin-top:28px">日期 → 时间戳</h3>
+      <div class="row">
+        <input type="datetime-local" id="dt-in" class="field">
+        <button class="btn" id="dt-go">转换</button>
+      </div>
+      <div class="out" id="dt-out"></div>
+    </section>
+
+    <!-- 编码 -->
+    <section class="panel" id="panel-codec" hidden>
+      <h2>Base64 / URL 编解码</h2>
+      <p class="hint">Base64 用 UTF-8 处理，中文不会乱码。</p>
+      <textarea id="codec-in" class="field" spellcheck="false" placeholder="在这里输入要编码或解码的文本">你好，世界</textarea>
+      <div class="row">
+        <button class="btn primary" data-codec="b64enc">Base64 编码</button>
+        <button class="btn" data-codec="b64dec">Base64 解码</button>
+        <button class="btn" data-codec="urlenc">URL 编码</button>
+        <button class="btn" data-codec="urldec">URL 解码</button>
+        <button class="btn" data-copy="#codec-out">复制结果</button>
+      </div>
+      <div class="out" id="codec-out"></div>
+    </section>
+
+    <!-- 密码 -->
+    <section class="panel" id="panel-pwd" hidden>
+      <h2>随机密码生成</h2>
+      <p class="hint">用浏览器自带的加密随机数（crypto.getRandomValues），不是 Math.random。</p>
+      <div class="row">
+        <label class="check">长度 <b id="pwd-len-label">20</b></label>
+        <input type="range" id="pwd-len" min="6" max="64" value="20" style="flex:1 1 200px;accent-color:var(--accent)">
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="pwd-lower" checked>小写</label>
+        <label class="check"><input type="checkbox" id="pwd-upper" checked>大写</label>
+        <label class="check"><input type="checkbox" id="pwd-digit" checked>数字</label>
+        <label class="check"><input type="checkbox" id="pwd-symbol" checked>符号</label>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="pwd-go">生成</button>
+        <button class="btn" data-copy="#pwd-out">复制</button>
+      </div>
+      <div class="out" id="pwd-out"></div>
+      <p class="hint" id="pwd-info"></p>
+    </section>
+
+    <!-- 哈希 -->
+    <section class="panel" id="panel-hash" hidden>
+      <h2>SHA-256</h2>
+      <p class="hint">用 Web Crypto API 计算，和 <code>shasum -a 256</code> 结果一致。</p>
+      <textarea id="hash-in" class="field" spellcheck="false" style="min-height:110px" placeholder="输入要计算哈希的文本"></textarea>
+      <div class="row">
+        <button class="btn primary" id="hash-go">计算 SHA-256</button>
+        <button class="btn" data-copy="#hash-out">复制</button>
+      </div>
+      <div class="out" id="hash-out"></div>
+    </section>
+
+    <!-- 颜色 -->
+    <section class="panel" id="panel-color" hidden>
+      <h2>颜色格式转换</h2>
+      <p class="hint">HEX、RGB、HSL 互相换算，实时预览。</p>
+      <div class="row">
+        <input type="color" id="color-pick" value="#1f4fd8" style="width:56px;height:42px;padding:2px;border:1px solid var(--line);border-radius:9px;background:var(--surface);cursor:pointer">
+        <input id="color-hex" class="field" value="#1f4fd8" spellcheck="false" placeholder="#1f4fd8">
+      </div>
+      <div id="color-swatch" style="height:64px;border-radius:12px;border:1px solid var(--line);margin:0 0 14px;background:#1f4fd8"></div>
+      <div class="out" id="color-out"></div>
+    </section>
+
+    <!-- 文本统计 -->
+    <section class="panel" id="panel-text" hidden>
+      <h2>文本统计</h2>
+      <p class="hint">字数、行数、UTF-8 字节数，边打边算。</p>
+      <textarea id="text-in" class="field" spellcheck="false" placeholder="在这里粘贴文本"></textarea>
+      <div class="stat-row" style="margin-top:14px">
+        <div class="stat"><span>字符数</span><b id="t-chars">0</b></div>
+        <div class="stat"><span>不含空格</span><b id="t-nospace">0</b></div>
+        <div class="stat"><span>中文字</span><b id="t-cjk">0</b></div>
+        <div class="stat"><span>英文单词</span><b id="t-words">0</b></div>
+        <div class="stat"><span>行数</span><b id="t-lines">0</b></div>
+        <div class="stat"><span>UTF-8 字节</span><b id="t-bytes">0</b></div>
+      </div>
+      <div class="out" id="text-time" style="min-height:0"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/games/">玩游戏 →</a></span>
+  </footer>
+
+</div>
+<script src="/tools/tools.js"></script>
+</body>
+</html>

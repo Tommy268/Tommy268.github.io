@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>贪吃蛇 — Tommy</title>
+<meta name="description" content="浏览器里的贪吃蛇小游戏，方向键或滑动操作。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/tools/">工具</a>
+      <a href="/games/" class="on">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">游戏</p>
+    <h1>贪吃蛇</h1>
+    <p class="lead">方向键或 WASD 转向，空格暂停。手机上用下面的方向键，或者直接在画面上滑。</p>
+
+    <div class="hud" style="margin-top:34px">
+      <div class="stat">得分 <b id="score">0</b></div>
+      <div class="stat">最高 <b id="best">0</b></div>
+      <button class="btn" id="restart">重新开始</button>
+      <button class="btn" id="pause">暂停</button>
+    </div>
+
+    <div class="stage">
+      <div class="canvas-wrap">
+        <canvas id="snake"></canvas>
+      </div>
+      <div class="overlay" id="overlay">
+        <div>
+          <div id="overlay-text">按方向键开始</div>
+          <button class="btn primary" id="overlay-btn">开始</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pad">
+      <button class="btn up" data-dir="up" aria-label="上">↑</button>
+      <button class="btn left" data-dir="left" aria-label="左">←</button>
+      <button class="btn down" data-dir="down" aria-label="下">↓</button>
+      <button class="btn right" data-dir="right" aria-label="右">→</button>
+    </div>
+
+    <p class="hint" style="margin-top:20px">每吃一个加 10 分，速度会慢慢变快。撞墙或撞到自己就结束，最高分存在本地。</p>
+
+    <p class="back"><a href="/games/">← 其他游戏</a></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/tools/">工具 →</a></span>
+  </footer>
+
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var COLS = 20, ROWS = 20;
+  var canvas = document.getElementById('snake');
+  var ctx = canvas.getContext('2d');
+  var scoreEl = document.getElementById('score');
+  var bestEl = document.getElementById('best');
+  var overlay = document.getElementById('overlay');
+  var overlayText = document.getElementById('overlay-text');
+  var overlayBtn = document.getElementById('overlay-btn');
+  var pauseBtn = document.getElementById('pause');
+  var BEST_KEY = 'tommySnakeBest';
+
+  var cell = 20;
+  var snake, dir, queued, food, score, best, state, speed, acc, last, colors;
+
+  best = Number(localStorage.getItem(BEST_KEY) || 0);
+
+  function readColors() {
+    var cs = getComputedStyle(document.documentElement);
+    colors = {
+      accent: cs.getPropertyValue('--accent').trim() || '#1f4fd8',
+      line: cs.getPropertyValue('--line').trim() || '#e5e1da',
+      surface: cs.getPropertyValue('--surface').trim() || '#ffffff',
+      muted: cs.getPropertyValue('--muted').trim() || '#6f6a63'
+    };
+  }
+
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    var size = canvas.parentElement.clientWidth || 400;
+    canvas.width = Math.round(size * dpr);
+    canvas.height = Math.round(size * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cell = size / COLS;
+    readColors();
+    draw();
+  }
+
+  function reset() {
+    snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+    dir = { x: 1, y: 0 };
+    queued = null;
+    score = 0;
+    speed = 145;
+    acc = 0;
+    last = 0;
+    state = 'ready';
+    placeFood();
+    scoreEl.textContent = '0';
+    bestEl.textContent = String(best);
+    overlayText.textContent = '按方向键开始';
+    overlayBtn.textContent = '开始';
+    pauseBtn.textContent = '暂停';
+    overlay.classList.add('show');
+    draw();
+  }
+
+  function placeFood() {
+    var free = [];
+    for (var y = 0; y < ROWS; y++) {
+      for (var x = 0; x < COLS; x++) {
+        var hit = snake.some(function (s) { return s.x === x && s.y === y; });
+        if (!hit) free.push({ x: x, y: y });
+      }
+    }
+    food = free[Math.floor(Math.random() * free.length)] || { x: 0, y: 0 };
+  }
+
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function draw() {
+    if (!colors) readColors();
+    var size = cell * COLS;
+    ctx.fillStyle = colors.surface;
+    ctx.fillRect(0, 0, size, size);
+
+    /* 淡淡的网格 */
+    ctx.strokeStyle = colors.line;
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.5;
+    for (var i = 1; i < COLS; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * cell, 0);
+      ctx.lineTo(i * cell, size);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i * cell);
+      ctx.lineTo(size, i * cell);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    /* 食物 */
+    if (food) {
+      ctx.fillStyle = '#e0574a';
+      ctx.beginPath();
+      ctx.arc((food.x + 0.5) * cell, (food.y + 0.5) * cell, cell * 0.32, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    /* 蛇 */
+    for (var k = snake.length - 1; k >= 0; k--) {
+      var s = snake[k];
+      ctx.globalAlpha = k === 0 ? 1 : 0.92;
+      ctx.fillStyle = colors.accent;
+      var pad = cell * 0.09;
+      roundRect(s.x * cell + pad, s.y * cell + pad, cell - pad * 2, cell - pad * 2, cell * 0.22);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function step() {
+    if (queued) {
+      dir = queued;
+      queued = null;
+    }
+    var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if (head.x < 0 || head.y < 0 || head.x >= COLS || head.y >= ROWS) return die();
+    for (var i = 0; i < snake.length - 1; i++) {
+      if (snake[i].x === head.x && snake[i].y === head.y) return die();
+    }
+
+    snake.unshift(head);
+    if (food && head.x === food.x && head.y === food.y) {
+      score += 10;
+      scoreEl.textContent = String(score);
+      if (score > best) {
+        best = score;
+        bestEl.textContent = String(best);
+        localStorage.setItem(BEST_KEY, String(best));
+      }
+      speed = Math.max(70, speed - 4);
+      placeFood();
+    } else {
+      snake.pop();
+    }
+  }
+
+  function die() {
+    state = 'over';
+    overlayText.textContent = '撞到了。得分 ' + score;
+    overlayBtn.textContent = '再来一局';
+    overlay.classList.add('show');
+  }
+
+  function turn(name) {
+    var map = {
+      left: { x: -1, y: 0 }, right: { x: 1, y: 0 },
+      up: { x: 0, y: -1 }, down: { x: 0, y: 1 }
+    };
+    var next = map[name];
+    if (!next) return;
+    /* 不允许 180° 掉头 */
+    if (next.x === -dir.x && next.y === -dir.y) return;
+    if (state === 'ready') start();
+    queued = next;
+  }
+
+  function start() {
+    if (state === 'over') return reset();
+    state = 'running';
+    overlay.classList.remove('show');
+    pauseBtn.textContent = '暂停';
+    acc = 0;
+  }
+
+  function loop(t) {
+    if (!last) last = t;
+    var dt = t - last;
+    last = t;
+    if (dt > 250) dt = 250;
+
+    if (state === 'running') {
+      acc += dt;
+      while (acc >= speed) {
+        acc -= speed;
+        if (state === 'running') step();
+      }
+      draw();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  /* ---------- 输入 ---------- */
+  var KEYS = {
+    ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down',
+    a: 'left', d: 'right', w: 'up', s: 'down',
+    A: 'left', D: 'right', W: 'up', S: 'down'
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (KEYS[e.key]) {
+      e.preventDefault();
+      if (state === 'paused') return;
+      turn(KEYS[e.key]);
+    } else if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      togglePause();
+    } else if (e.key === 'r' || e.key === 'R') {
+      reset();
+    }
+  });
+
+  function togglePause() {
+    if (state === 'running') {
+      state = 'paused';
+      pauseBtn.textContent = '继续';
+      overlayText.textContent = '已暂停';
+      overlayBtn.textContent = '继续';
+      overlay.classList.add('show');
+    } else if (state === 'paused' || state === 'ready') {
+      start();
+      pauseBtn.textContent = '暂停';
+      overlay.classList.remove('show');
+    }
+  }
+
+  pauseBtn.addEventListener('click', togglePause);
+  document.getElementById('restart').addEventListener('click', reset);
+  overlayBtn.addEventListener('click', function () {
+    if (state === 'over') reset();
+    else start();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.pad .btn'), function (btn) {
+    btn.addEventListener('click', function () { turn(btn.dataset.dir); });
+  });
+
+  /* 滑动 */
+  var touchStart = null;
+  canvas.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) return;
+    touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }, { passive: true });
+
+  canvas.addEventListener('touchend', function (e) {
+    if (!touchStart || !e.changedTouches.length) return;
+    var dx = e.changedTouches[0].clientX - touchStart.x;
+    var dy = e.changedTouches[0].clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
+    if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 'right' : 'left');
+    else turn(dy > 0 ? 'down' : 'up');
+    e.preventDefault();
+  }, { passive: false });
+
+  window.addEventListener('resize', resize);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+    readColors();
+    draw();
+  });
+
+  reset();
+  resize();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

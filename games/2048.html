@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2048 — Tommy</title>
+<meta name="description" content="浏览器里的 2048，方向键或滑动操作。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/tools/">工具</a>
+      <a href="/games/" class="on">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">游戏</p>
+    <h1>2048</h1>
+    <p class="lead">方向键或 WASD 移动，手机上直接滑。按 R 重开一局。</p>
+
+    <div class="hud" style="margin-top:34px">
+      <div class="stat">得分 <b id="score">0</b></div>
+      <div class="stat">最高 <b id="best">0</b></div>
+      <button class="btn" id="new-game">重新开始</button>
+    </div>
+
+    <div class="stage">
+      <div class="board2048" id="board"></div>
+      <div class="overlay" id="overlay">
+        <div>
+          <div id="overlay-text"></div>
+          <button class="btn primary" id="overlay-btn" data-action="restart">再来一局</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:20px">规则：相同的数字碰到一起会合并，目标是凑出 2048。最高分只存在你自己的浏览器里。</p>
+
+    <p class="back"><a href="/games/">← 其他游戏</a></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/tools/">工具 →</a></span>
+  </footer>
+
+</div>
+<script type="module" src="/games/2048.js"></script>
+</body>
+</html>
