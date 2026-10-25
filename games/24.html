@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24 点 — Tommy</title>
+<meta name="description" content="用加减乘除把四张牌算成 24。每道题都保证有解。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/novels/">小说</a>
+      <a href="/til/">笔记</a>
+      <a href="/tools/">工具</a>
+      <a href="/games/" class="on">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">游戏</p>
+    <h1>24 点</h1>
+    <p class="lead">四张牌，加减乘除，算出 24。每道题都保证有解——不会让你白算。</p>
+
+    <div class="hud" style="margin-top:32px">
+      <div class="stat">已解出 <b id="solved">0</b></div>
+      <div class="stat">连续 <b id="streak">0</b></div>
+      <div class="stat">最佳连续 <b id="best">0</b></div>
+      <button class="btn" id="undo">撤销</button>
+    </div>
+
+    <div class="cards24" id="cards" style="margin-top:6px"></div>
+
+    <div class="ops24" id="ops">
+      <button class="op24" data-op="+">＋</button>
+      <button class="op24" data-op="−">－</button>
+      <button class="op24" data-op="×">×</button>
+      <button class="op24" data-op="÷">÷</button>
+    </div>
+
+    <div class="steps24" id="steps">先点一张牌，再点一个运算符，最后点另一张牌。</div>
+
+    <div class="row" style="margin-top:20px">
+      <button class="btn primary" id="next">换一题</button>
+      <button class="btn" id="hint">看答案</button>
+    </div>
+
+    <p class="hint" style="margin-top:20px">
+      点两张牌 + 一个运算符，它们会合成一张新牌。合到只剩一张、且等于 24 就算赢。
+      分数是允许的，比如 7 ÷ 2 会显示成 7/2。<br>
+      键盘：<code>1</code>–<code>4</code> 选牌，<code>+ - * /</code> 选运算符，<code>Z</code> 撤销，<code>N</code> 换题。
+    </p>
+
+    <p class="back"><a href="/games/">← 其他游戏</a></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/games/memory.html">上一款：记忆翻牌 →</a></span>
+  </footer>
+
+</div>
+<script type="module" src="/games/24.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>记忆翻牌 — Tommy</title>
+<meta name="description" content="记住位置，把成对的图案翻出来。三种难度。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/">文章</a>
+      <a href="/novels/">小说</a>
+      <a href="/til/">笔记</a>
+      <a href="/tools/">工具</a>
+      <a href="/games/" class="on">游戏</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">游戏</p>
+    <h1>记忆翻牌</h1>
+    <p class="lead">记住位置，把成对的图案翻出来。用最少的步数、最短的时间清空牌面。</p>
+
+    <div class="hud" style="margin-top:32px">
+      <div class="stat">步数 <b id="moves">0</b></div>
+      <div class="stat">用时 <b id="timer">0:00</b></div>
+      <div class="stat">最佳 <b id="best">—</b></div>
+    </div>
+
+    <div class="row" style="margin:0 0 18px">
+      <button class="btn" data-level="easy">4 × 3</button>
+      <button class="btn primary" data-level="normal">4 × 4</button>
+      <button class="btn" data-level="hard">4 × 5</button>
+      <button class="btn" id="restart">重新开始</button>
+    </div>
+
+    <div class="stage" style="width:min(100%,440px)">
+      <div class="memory-grid" id="grid"></div>
+      <div class="overlay" id="overlay">
+        <div>
+          <div id="overlay-text"></div>
+          <button class="btn primary" id="overlay-btn">再来一局</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:20px">
+      点一下翻开，翻到两张一样的就消除。键盘可以用 Tab 切换、空格翻开，或者用方向键移动。
+      最佳成绩按「步数优先、时间其次」比较，存在你自己的浏览器里。
+    </p>
+
+    <p class="back"><a href="/games/">← 其他游戏</a></p>
+  </main>
+
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span><a href="/games/24.html">下一个：24 点 →</a></span>
+  </footer>
+
+</div>
+<script src="/games/memory.js"></script>
+</body>
+</html>

@@ -918,3 +918,140 @@ textarea.field {
   .prose p { margin-bottom: 1.05em; }
   .chapter-head h1 { font-size: 23px; }
 }
+
+/* ==========================================================
+   记忆翻牌
+   ========================================================== */
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: min(100%, 440px);
+}
+
+.mcard {
+  appearance: none;
+  font: inherit;
+  padding: 0;
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+  font-size: clamp(20px, 6.4vw, 30px);
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.16s, border-color 0.16s, transform 0.16s, color 0.16s;
+}
+.mcard:hover { border-color: var(--accent); }
+.mcard.flipped {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--fg);
+  transform: translateY(-2px);
+}
+.mcard.matched {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--fg);
+  opacity: 0.45;
+  cursor: default;
+}
+.mcard.wrong {
+  border-color: #d9534f;
+  background: #fdecec;
+  animation: mshake 0.28s ease;
+}
+@media (prefers-color-scheme: dark) {
+  .mcard.wrong { background: #3a2121; border-color: #e07b76; }
+}
+@keyframes mshake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ==========================================================
+   24 点
+   ========================================================== */
+
+.cards24 {
+  display: flex;
+  gap: 10px;
+  width: min(100%, 440px);
+}
+
+.card24 {
+  appearance: none;
+  font: inherit;
+  padding: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--fg);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 5.2vw, 27px);
+  line-height: 1;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s, opacity 0.15s;
+}
+.card24:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card24.sel {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  transform: translateY(-3px);
+}
+.card24.gone {
+  opacity: 0.2;
+  pointer-events: none;
+  transform: scale(0.9);
+}
+.card24 small {
+  position: absolute;
+  top: 7px;
+  left: 9px;
+  font-size: 11px;
+  font-family: var(--font-sans);
+  color: var(--muted);
+}
+
+.ops24 { display: flex; gap: 8px; margin: 16px 0 0; flex-wrap: wrap; }
+.op24 {
+  appearance: none;
+  font: inherit;
+  width: 54px;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--fg);
+  font-size: 19px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.op24:hover { border-color: var(--accent); color: var(--accent); }
+.op24.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.steps24 {
+  margin: 16px 0 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--muted);
+  min-height: 1.9em;
+  word-break: break-all;
+}
+.steps24 .bad { color: #c0392b; }
