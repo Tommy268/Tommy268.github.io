@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我每天在用的 10 个 Git 命令 — Tommy</title>
+<meta name="description" content="从 status 到 worktree，日常开发真正高频的十个 Git 命令和它们的实际用法。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/" class="on">文章</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <h1>我每天在用的 10 个 Git 命令</h1>
+      <p class="meta"><time>2026-10-18</time> · 约 5 分钟</p>
+
+      <p>Git 有几百个子命令，但真正每天敲的其实就十来个。
+         下面这些按使用频率排，都是我自己在用的版本，不是文档抄来的。</p>
+
+      <h2>1. status —— 先看再动</h2>
+      <p>很多人出问题的根源是一上来就 <code>git add -A</code>。
+         先看眼状态，成本几乎为零。</p>
+      <pre><code>git status -sb</code></pre>
+      <p><code>-sb</code> 输出短格式，同时显示分支和领先/落后远端的提交数。</p>
+
+      <h2>2. add -p —— 一次只提交一件事</h2>
+      <p>改了三处不相关的代码，结果一个 commit 全塞进去了——以后 revert 的时候你会后悔。
+         <code>-p</code> 让你按代码块挑选要暂存的部分。</p>
+      <pre><code>git add -p</code></pre>
+      <p>交互里 <code>y</code> 收下、<code>n</code> 跳过、<code>s</code> 切更小的块、<code>q</code> 退出。</p>
+
+      <h2>3. switch -c —— 开分支</h2>
+      <p>老教程里的 <code>checkout</code> 一个命令干了太多事，新版把切分支拆出来了：</p>
+      <pre><code>git switch -c fix/login-timeout
+git switch main</code></pre>
+      <p>命名我习惯用 <code>类型/简短描述</code>，看分支列表时一眼知道在干什么。</p>
+
+      <h2>4. log --graph —— 看清历史形状</h2>
+      <pre><code>git log --oneline --graph --decorate -20</code></pre>
+      <p>合并、变基之后历史会变复杂，把它画出来比读文字快得多。
+         嫌长就 <code>git config --global alias.lg "log --oneline --graph --decorate"</code>。</p>
+
+      <h2>5. diff --staged —— 提交前最后一道关</h2>
+      <pre><code>git diff --staged</code></pre>
+      <p><code>git diff</code> 只看未暂存的改动，<code>--staged</code> 看的才是「这次提交到底包含什么」。
+         有没有把调试用的 <code>print</code> 带进去，全看这一步。</p>
+
+      <h2>6. commit --amend —— 改掉上一条</h2>
+      <pre><code>git commit --amend --no-edit   # 只补文件，不改说明
+git commit --amend             # 连说明一起改</code></pre>
+      <p>⚠️ 只对<strong>还没 push</strong> 的提交用。推上去之后 amend 会改写历史，
+         队友拉取时会撞车。</p>
+
+      <h2>7. rebase -i —— 整理提交</h2>
+      <pre><code>git rebase -i HEAD~3</code></pre>
+      <p>把三条「wip」「再改一下」「真的能跑了」压成一条有意义的提交。
+         把 <code>pick</code> 改成 <code>squash</code> 即可合并，改成 <code>reword</code> 可以改说明。</p>
+      <p>原则：<strong>自己的分支随便改，公共分支别碰</strong>。</p>
+
+      <h2>8. stash —— 临时中断</h2>
+      <p>改到一半被叫去修紧急 bug：</p>
+      <pre><code>git stash push -m "wip: 登录页"
+git switch hotfix/xxx
+# ... 处理完
+git switch -
+git stash pop</code></pre>
+      <p><code>git stash list</code> 看列表，<code>stash pop</code> 取回并删除，
+         <code>stash apply</code> 取回但保留。</p>
+
+      <h2>9. restore —— 后悔药</h2>
+      <pre><code>git restore file.py            # 丢弃工作区改动
+git restore --staged file.py   # 取消暂存，改动保留</code></pre>
+      <p>比记 <code>git checkout -- </code> 和 <code>git reset HEAD</code> 直观太多了。
+         注意第一条<strong>会真的丢掉未提交的改动</strong>，先确认 <code>git diff</code> 再敲。</p>
+
+      <h2>10. worktree —— 同时开两个分支干活</h2>
+      <p>这个用的人少但极好用。不用 stash、不用 clone 第二份仓库：</p>
+      <pre><code>git worktree add ../hotfix hotfix/xxx
+# 在 ../hotfix 目录里正常改，主目录保持不变
+git worktree remove ../hotfix</code></pre>
+      <p>线上出问题的时候，一边留着当前工作区，一边开一个干净目录去修，互不干扰。</p>
+
+      <h2>外加两个救命命令</h2>
+      <h3>reflog —— 找回过的一切</h3>
+      <pre><code>git reflog</code></pre>
+      <p>误删分支、reset 错了、rebase 搞砸了，只要提交过，
+         <code>reflog</code> 里就还留着它的哈希，<code>git switch -c rescue 哈希</code> 就能捞回来。</p>
+
+      <h3>bisect —— 定位是哪次引入的 bug</h3>
+      <pre><code>git bisect start
+git bisect bad
+git bisect good v1.2.0
+# 二分测试，每次告诉它 good 或 bad
+git bisect reset</code></pre>
+      <p>一千个提交里找问题，手工翻要一天，二分法十几次就定位到。</p>
+
+      <h2>小结</h2>
+      <p>真正需要背下来的其实只有 <code>status</code>、<code>diff</code>、<code>add</code>、<code>commit</code> 四个，
+         剩下的都是出事时的工具。而所有工具里，
+         <strong>先把 <code>reflog</code> 记住</strong>，能省掉 90% 的心跳加速。</p>
+    </article>
+
+    <p class="back"><a href="/posts/">← 全部文章</a></p>
+  </main>
+
+  <footer>© 2026 Tommy · 用 GitHub Pages 托管</footer>
+
+</div>
+</body>
+</html>

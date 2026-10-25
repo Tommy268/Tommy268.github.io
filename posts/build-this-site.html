@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>这个网站是怎么搭起来的，以及踩的三个坑 — Tommy</title>
+<meta name="description" content="用 GitHub Pages 从零搭一个静态个人网站的全过程，包括仓库命名、.nojekyll 和缓存这几个坑。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/posts/" class="on">文章</a>
+      <a href="/about.html">关于</a>
+      <a href="https://github.com/Tommy268">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <h1>这个网站是怎么搭起来的，以及踩的三个坑</h1>
+      <p class="meta"><time>2026-10-24</time> · 约 6 分钟</p>
+
+      <p>在决定自己搭站之前，我试过三种方案：写在某平台的专栏里、用 Notion 公开页面、
+         以及干脆不写。三种都失败在同一个原因上——东西不在自己手里。</p>
+
+      <p>平台会改版，导出会丢格式，账号可能会因为莫名其妙的原因被限制。
+         我想要的东西很简单：一堆静态文件，一个域名，十年后还能原样打开。</p>
+
+      <h2>为什么是 GitHub Pages</h2>
+      <p>对比了一圈，结论是对于「纯文字 + 偶尔配图」的个人站，没有比它更省事的选择：</p>
+
+      <table>
+        <tr><th>方案</th><td>成本</td><td>国内速度</td><td>维护</td></tr>
+        <tr><th>GitHub Pages</th><td>0</td><td>一般</td><td>push 即部署</td></tr>
+        <tr><th>云服务器 + Nginx</th><td>几百/年</td><td>快</td><td>要管安全、证书、备份</td></tr>
+        <tr><th>静态托管（OSS/COS）</th><td>几块/月</td><td>快</td><td>要备案</td></tr>
+      </table>
+
+      <p>速度上它确实不是最优解，但「零成本 + 零运维」这一条对个人项目来说权重太高了。
+         真到了需要速度的那天，再迁也不迟——反正都是静态文件。</p>
+
+      <h2>三步上线</h2>
+      <ol>
+        <li>建一个叫 <code>用户名.github.io</code> 的公开仓库。这个名字不能改，改了地址就变。</li>
+        <li>把 <code>index.html</code> 放在仓库<strong>根目录</strong>，push 上去。</li>
+        <li>仓库 Settings → Pages，分支选 <code>main</code>、目录选 <code>/ (root)</code>，保存。</li>
+      </ol>
+
+      <pre><code>git init -b main
+git add -A
+git commit -m "init"
+git remote add origin https://github.com/Tommy268/Tommy268.github.io.git
+git push -u origin main</code></pre>
+
+      <p>等一两分钟，<code>https://tommy268.github.io</code> 就能打开了。
+         从这一步开始，每次改完 <code>git push</code>，半分钟后线上就更新。</p>
+
+      <h2>踩的三个坑</h2>
+
+      <h3>1. 名字写错，地址就变成了二级路径</h3>
+      <p>如果仓库叫 <code>my-site</code> 而不是 <code>用户名.github.io</code>，
+         网站不是不能访问，而是会跑到 <code>用户名.github.io/my-site/</code> 下面去。
+         这个差别很关键：一旦在子路径里，所有以 <code>/</code> 开头的绝对路径全部失效，
+         样式表、图片、页面链接会一起崩掉。</p>
+      <p>要么老老实实用根仓库名，要么把全站路径改成相对路径。
+         我选了前者，因为它顺带解决了「以后想绑自己域名时路径怎么算」的问题。</p>
+
+      <h3>2. 文件名以 <code>_</code> 开头会被静默吞掉</h3>
+      <p>GitHub Pages 默认把仓库当 Jekyll 站点处理，
+         而 Jekyll 会跳过 <code>_</code> 和 <code>.</code> 开头的文件。
+         结果是 push 成功了、Actions 显示部署成功、文件就是 404。</p>
+      <p>解决办法是在根目录放一个空的 <code>.nojekyll</code> 文件。
+         就一个空文件，什么都不用写，但少了它你会查一下午。</p>
+
+      <h3>3. 改了不生效，八成是缓存</h3>
+      <p>部署是真的要等，通常 20–60 秒。但更常见的误会是浏览器缓存：
+         尤其是 CSS 改完之后页面纹丝不动，很容易让人以为部署挂了。</p>
+      <p>养成习惯：改完 <code>Ctrl + F5</code> 硬刷新，或者开一个无痕窗口看。
+         另外去仓库的 <strong>Actions</strong> 标签页能看到每次部署的真实状态，
+         比盯着页面猜要快得多。</p>
+
+      <h2>几个事后觉得值得的决定</h2>
+      <ul>
+        <li><strong>不用框架。</strong>总共四个页面，手写 HTML 比装一套构建工具快。</li>
+        <li><strong>不用 CDN。</strong>一个本地 <code>style.css</code> 就够，少一个外部依赖就少一个挂掉的点。</li>
+        <li><strong>加 <code>prefers-color-scheme</code>。</strong>十几行 CSS 就能支持深色模式，体验提升明显。</li>
+        <li><strong>正文用 <code>rem</code> 和相对行高。</strong>手机上读长文章舒服很多。</li>
+      </ul>
+
+      <blockquote>能在十分钟内上线的东西，才有机会被真的上线。</blockquote>
+
+      <p>下一步要做的是绑自己的域名，还有给文章加评论。
+         不过说实话，先写十篇再说这些也不迟。</p>
+    </article>
+
+    <p class="back"><a href="/posts/">← 全部文章</a></p>
+  </main>
+
+  <footer>© 2026 Tommy · 用 GitHub Pages 托管</footer>
+
+</div>
+</body>
+</html>

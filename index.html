@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tommy — 个人网站</title>
-<meta name="description" content="Tommy 的个人网站：笔记、项目和一些想法。">
+<title>Tommy — 写代码，也写字</title>
+<meta name="description" content="Tommy 的个人网站：后端开发笔记、踩坑记录和长期有用的东西。">
+<meta property="og:title" content="Tommy — 写代码，也写字">
+<meta property="og:description" content="后端开发笔记、踩坑记录和长期有用的东西。">
+<meta property="og:type" content="website">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -12,48 +16,58 @@
 
   <header>
     <nav>
-      <a href="/">首页</a>
+      <a href="/" class="on">首页</a>
+      <a href="/posts/">文章</a>
       <a href="/about.html">关于</a>
       <a href="https://github.com/Tommy268">GitHub</a>
-      <a href="mailto:you@example.com">邮箱</a>
     </nav>
   </header>
 
   <main>
     <h1>你好，我是 Tommy</h1>
-    <p class="lead">一个正在折腾代码和写作的人。这里放我的笔记、项目和做过的实验。</p>
+    <p class="lead">写后端，也写字。这里放我踩过的坑、想明白的事，和一些长期有用的东西。</p>
 
-    <h2>文章</h2>
+    <h2>最近写的</h2>
     <ul class="plain">
       <li>
-        <a href="/posts/hello-world.html">第一篇文章：为什么我要搭这个网站</a>
+        <a href="/posts/build-this-site.html">这个网站是怎么搭起来的，以及踩的三个坑</a>
         <span>2026-10-24</span>
       </li>
       <li>
-        <a href="/posts/hello-world.html">（这里放你的第二篇，删掉这行）</a>
-        <span>待写</span>
+        <a href="/posts/git-commands.html">我每天在用的 10 个 Git 命令</a>
+        <span>2026-10-18</span>
+      </li>
+      <li>
+        <a href="/posts/start-writing.html">为什么开始写东西，以及怎么不至于放弃</a>
+        <span>2026-10-09</span>
       </li>
     </ul>
+    <p style="margin-top:16px;font-size:14px"><a href="/posts/">全部文章 →</a></p>
 
-    <h2>项目</h2>
+    <h2>在做的东西</h2>
     <ul class="plain">
       <li>
-        <a href="https://github.com/Tommy268">某个小工具</a>
+        <a href="https://github.com/Tommy268">一个命令行记账工具</a>
         <span>Python</span>
       </li>
       <li>
-        <a href="https://github.com/Tommy268">某个网页 Demo</a>
-        <span>JavaScript</span>
+        <a href="https://github.com/Tommy268">把常用脚本整理成一个工具集</a>
+        <span>Shell / Go</span>
+      </li>
+      <li>
+        <a href="/posts/build-this-site.html">这个网站本身</a>
+        <span>HTML / CSS</span>
       </li>
     </ul>
 
     <h2>关于这页</h2>
-    <p>用纯 HTML 手写，托管在 GitHub Pages，没有框架、没有构建步骤。<br>
-    想改成自己的，直接改这些文件然后 <code>git push</code> 就行。</p>
+    <p>纯手写 HTML，托管在 GitHub Pages。没有框架、没有构建步骤、没有跟踪脚本，
+       打开快得有点不真实。全部源码在
+       <a href="https://github.com/Tommy268/Tommy268.github.io">GitHub</a> 上。</p>
   </main>
 
   <footer>
-    © 2026 Tommy · Built with GitHub Pages
+    © 2026 Tommy · <a href="https://github.com/Tommy268/Tommy268.github.io" style="color:inherit">源码</a> · 用 GitHub Pages 托管
   </footer>
 
 </div>
