@@ -32,10 +32,10 @@
 | `index.html` 的 `<h1>` | 你好，我是 Tommy | 你的名字 |
 | `index.html` 底部「关于这页」 | 项目链接指向 github.com/Tommy268 | 真实仓库地址 |
 | `about.html` | 「后端开发」「Python/Go」等自我描述 | 你的真实背景 |
-| `about.html` 邮箱 | `you@example.com` | 你的邮箱 |
+
 | 三个 `posts/*.html` | 示例文章 | 你自己写的，或直接删掉 |
 
-搜索 `you@example.com` 可以一次找全所有待改的邮箱。
+联系邮箱已填为 `3628034540@qq.com`，位置在 `about.html` 的「联系」一节和首页页脚。
 
 ## 上线步骤
 

@@ -194,6 +194,14 @@ h3 { font-size: 16px; font-weight: 700; margin: 30px 0 10px; }
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+
+/* 列表右侧的值（邮箱、用户名等），不参与伸缩 */
+.list .val {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 13.5px;
+  white-space: nowrap;
+}
 ul.plain li:not(:has(> a)) {
   display: flex;
   justify-content: space-between;
