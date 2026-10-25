@@ -24,50 +24,60 @@
   </header>
 
   <main>
+    <div class="avatar">T</div>
+    <p class="eyebrow">个人网站 · 2026</p>
     <h1>你好，我是 Tommy</h1>
     <p class="lead">写后端，也写字。这里放我踩过的坑、想明白的事，和一些长期有用的东西。</p>
 
-    <h2>最近写的</h2>
-    <ul class="plain">
+    <p class="section-title">最近写的</p>
+    <ul class="list">
       <li>
-        <a href="/posts/build-this-site.html">这个网站是怎么搭起来的，以及踩的三个坑</a>
-        <span>2026-10-24</span>
+        <a href="/posts/build-this-site.html">
+          <span>这个网站是怎么搭起来的，以及踩的三个坑</span>
+          <time datetime="2026-10-24">10-24</time>
+        </a>
       </li>
       <li>
-        <a href="/posts/git-commands.html">我每天在用的 10 个 Git 命令</a>
-        <span>2026-10-18</span>
+        <a href="/posts/git-commands.html">
+          <span>我每天在用的 10 个 Git 命令</span>
+          <time datetime="2026-10-18">10-18</time>
+        </a>
       </li>
       <li>
-        <a href="/posts/start-writing.html">为什么开始写东西，以及怎么不至于放弃</a>
-        <span>2026-10-09</span>
-      </li>
-    </ul>
-    <p style="margin-top:16px;font-size:14px"><a href="/posts/">全部文章 →</a></p>
-
-    <h2>在做的东西</h2>
-    <ul class="plain">
-      <li>
-        <a href="https://github.com/Tommy268">一个命令行记账工具</a>
-        <span>Python</span>
-      </li>
-      <li>
-        <a href="https://github.com/Tommy268">把常用脚本整理成一个工具集</a>
-        <span>Shell / Go</span>
-      </li>
-      <li>
-        <a href="/posts/build-this-site.html">这个网站本身</a>
-        <span>HTML / CSS</span>
+        <a href="/posts/start-writing.html">
+          <span>为什么开始写东西，以及怎么不至于放弃</span>
+          <time datetime="2026-10-09">10-09</time>
+        </a>
       </li>
     </ul>
+    <p style="margin:18px 0 0;font-size:14px"><a href="/posts/" style="text-decoration:none">全部文章 →</a></p>
 
-    <h2>关于这页</h2>
-    <p>纯手写 HTML，托管在 GitHub Pages。没有框架、没有构建步骤、没有跟踪脚本，
-       打开快得有点不真实。全部源码在
-       <a href="https://github.com/Tommy268/Tommy268.github.io">GitHub</a> 上。</p>
+    <p class="section-title">在做的东西</p>
+    <div class="cards">
+      <a class="card" href="https://github.com/Tommy268">
+        <h3>命令行记账工具</h3>
+        <p>Python · 一个 gnucash 太重、Excel 太散之后写的替代品</p>
+      </a>
+      <a class="card" href="https://github.com/Tommy268">
+        <h3>常用脚本工具集</h3>
+        <p>Shell / Go · 把散落在 dotfiles 里的小工具收拢起来</p>
+      </a>
+      <a class="card" href="/posts/build-this-site.html">
+        <h3>这个网站本身</h3>
+        <p>HTML / CSS · 手写静态页，零依赖零构建</p>
+      </a>
+    </div>
+
+    <p class="section-title">关于这页</p>
+    <p style="color:var(--muted);font-size:15px;margin:0">
+      纯手写 HTML，托管在 GitHub Pages。没有框架、没有构建步骤、没有跟踪脚本。<br>
+      全部源码在 <a href="https://github.com/Tommy268/Tommy268.github.io">GitHub</a> 上。
+    </p>
   </main>
 
   <footer>
-    © 2026 Tommy · <a href="https://github.com/Tommy268/Tommy268.github.io" style="color:inherit">源码</a> · 用 GitHub Pages 托管
+    <span>© 2026 Tommy</span>
+    <span><a href="https://github.com/Tommy268/Tommy268.github.io">源码</a> · GitHub Pages</span>
   </footer>
 
 </div>

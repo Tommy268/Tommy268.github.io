@@ -21,37 +21,59 @@
   </header>
 
   <main>
-    <h1>关于我</h1>
+    <p class="eyebrow">关于</p>
+    <h1>我是谁</h1>
     <p class="lead">后端开发。喜欢把复杂的东西拆开看，然后把拆的过程写下来。</p>
 
-    <h2>现在</h2>
-    <p>主要写服务端代码，日常在 Python 和 Go 之间切换，偶尔碰一点前端。
-       最近在折腾的是把这套个人网站和几个小工具收拢到一起，
-       顺便补一补对分布式系统的理解。</p>
+    <p class="section-title">现在</p>
+    <article style="font-size:16.5px">
+      <p>主要写服务端代码，日常在 Python 和 Go 之间切换，偶尔碰一点前端。
+         最近在折腾的是把这套个人网站和几个小工具收拢到一起，
+         顺便补一补对分布式系统的理解。</p>
+    </article>
 
-    <h2>会什么</h2>
-    <table>
-      <tr><th style="width:120px">熟练</th><td>Python、Go、SQL、Linux、Git</td></tr>
-      <tr><th>用过</th><td>Docker、Nginx、Redis、PostgreSQL、GitHub Actions</td></tr>
-      <tr><th>在学</th><td>Rust、分布式一致性、把字写好</td></tr>
-    </table>
+    <p class="section-title">会什么</p>
+    <article style="font-size:16.5px">
+      <table>
+        <tr><th style="width:88px">熟练</th><td>Python、Go、SQL、Linux、Git</td></tr>
+        <tr><th>用过</th><td>Docker、Nginx、Redis、PostgreSQL、GitHub Actions</td></tr>
+        <tr><th>在学</th><td>Rust、分布式一致性、把字写好</td></tr>
+      </table>
+    </article>
 
-    <h2>一些偏好</h2>
-    <ul>
-      <li>能用静态文件解决的问题，不上框架。</li>
-      <li>命令行的输出比界面的按钮可靠。</li>
-      <li>写下来的东西才算想清楚了。</li>
+    <p class="section-title">一些偏好</p>
+    <article style="font-size:16.5px">
+      <ul>
+        <li>能用静态文件解决的问题，不上框架。</li>
+        <li>命令行的输出比界面的按钮可靠。</li>
+        <li>写下来的东西才算想清楚了。</li>
+      </ul>
+    </article>
+
+    <p class="section-title">联系</p>
+    <ul class="list">
+      <li>
+        <a href="mailto:you@example.com">
+          <span>邮箱</span>
+          <time>you@example.com</time>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Tommy268">
+          <span>GitHub</span>
+          <time>@Tommy268</time>
+        </a>
+      </li>
     </ul>
-
-    <h2>联系我</h2>
-    <p>邮箱：<a href="mailto:you@example.com">you@example.com</a><br>
-       GitHub：<a href="https://github.com/Tommy268">@Tommy268</a></p>
-    <p style="color:var(--muted);font-size:14px">邮件比私信更容易被我看到。</p>
+    <p style="color:var(--muted);font-size:14px;margin:14px 0 0">邮件比私信更容易被我看到。</p>
 
     <p class="back"><a href="/">← 回首页</a></p>
   </main>
 
-  <footer>© 2026 Tommy · 用 GitHub Pages 托管</footer>
+  <footer>
+    <span>© 2026 Tommy</span>
+    <span>GitHub Pages</span>
+  </footer>
 
 </div>
 </body>
