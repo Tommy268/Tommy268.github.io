@@ -4,19 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tommy — 写代码，也写字</title>
-<meta name="description" content="Tommy 的个人网站：后端开发笔记、踩坑记录和长期有用的东西。">
+<meta name="description" content="Tommy 的个人网站：技术文章、校园丧尸连载、本地小工具和几个小游戏。">
 <meta property="og:title" content="Tommy — 写代码，也写字">
-<meta property="og:description" content="后端开发笔记、踩坑记录和长期有用的东西。">
+<meta property="og:description" content="技术文章、校园丧尸连载、本地小工具和几个小游戏。">
 <meta property="og:type" content="website">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
+<script>document.documentElement.classList.add('js');</script>
 </head>
-<body>
+<body class="home">
+
+<div class="progress" id="progress"></div>
+
 <div class="wrap">
 
   <header>
+    <a class="brand" href="/">
+      <span class="brand-mark">T</span>
+      <span class="brand-name">Tommy</span>
+    </a>
     <nav>
-      <a href="/" class="on">首页</a>
       <a href="/posts/">文章</a>
       <a href="/novels/">小说</a>
       <a href="/til/">笔记</a>
@@ -27,107 +34,244 @@
     </nav>
   </header>
 
+  <nav class="sec-rail" aria-label="页面分区">
+    <a href="#writing" data-sec="writing"><span class="dotmark"></span><span class="label">写</span></a>
+    <a href="#novel" data-sec="novel"><span class="dotmark"></span><span class="label">连载</span></a>
+    <a href="#notes" data-sec="notes"><span class="dotmark"></span><span class="label">记</span></a>
+    <a href="#play" data-sec="play"><span class="dotmark"></span><span class="label">玩</span></a>
+    <a href="#about" data-sec="about"><span class="dotmark"></span><span class="label">关于</span></a>
+  </nav>
+
   <main>
-    <div class="avatar">T</div>
-    <p class="eyebrow">个人网站 · 2026</p>
-    <h1>你好，我是 Tommy</h1>
-    <p class="lead">写后端，也写字。这里放我踩过的坑、想明白的事，和一些长期有用的东西。</p>
 
-    <p class="section-title">最近写的</p>
-    <ul class="list">
-      <li>
-        <a href="/posts/build-this-site.html">
-          <span>这个网站是怎么搭起来的，以及踩的三个坑</span>
-          <time datetime="2026-10-24">10-24</time>
-        </a>
-      </li>
-      <li>
-        <a href="/posts/git-commands.html">
-          <span>我每天在用的 10 个 Git 命令</span>
-          <time datetime="2026-10-18">10-18</time>
-        </a>
-      </li>
-      <li>
-        <a href="/posts/start-writing.html">
-          <span>为什么开始写东西，以及怎么不至于放弃</span>
-          <time datetime="2026-10-09">10-09</time>
-        </a>
-      </li>
-    </ul>
-    <p style="margin:18px 0 0;font-size:14px"><a href="/posts/" style="text-decoration:none">全部文章 →</a></p>
+    <!-- ============ 首屏 ============ -->
+    <section class="hero">
+      <div>
+        <p class="eyebrow">个人网站 · 2026</p>
+        <h1>写代码，<br>也写字。</h1>
+        <p class="lead">
+          后端开发。这里放三样东西：踩过的坑、编的故事、和自己写的小工具。
+          全部是静态页面，没有框架，也没有跟踪脚本。
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="/posts/">读文章</a>
+          <a class="btn" href="/novels/">看连载</a>
+        </div>
+        <div class="scroll-hint">
+          <span>往下看</span>
+          <span class="line"></span>
+          <span class="dot">↓</span>
+        </div>
+      </div>
 
-    <p class="section-title">在做的东西</p>
-    <div class="cards">
-      <a class="card" href="https://github.com/Tommy268">
-        <h3>命令行记账工具</h3>
-        <p>Python · 一个 gnucash 太重、Excel 太散之后写的替代品</p>
-      </a>
-      <a class="card" href="https://github.com/Tommy268">
-        <h3>常用脚本工具集</h3>
-        <p>Shell / Go · 把散落在 dotfiles 里的小工具收拢起来</p>
-      </a>
-      <a class="card" href="/posts/build-this-site.html">
-        <h3>这个网站本身</h3>
-        <p>HTML / CSS · 手写静态页，零依赖零构建</p>
-      </a>
-    </div>
+      <aside class="hero-aside">
+        <dl>
+          <div>
+            <dt>现在</dt>
+            <dd>在写一本校园丧尸连载<br>目前更新到第 2 章</dd>
+          </div>
+          <div>
+            <dt>在学</dt>
+            <dd>Rust、分布式一致性<br>把字写好</dd>
+          </div>
+          <div>
+            <dt>最近</dt>
+            <dd>10-24 · 这个网站是怎么搭起来的</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
 
-    <p class="section-title">最近记的</p>
-    <ul class="list">
-      <li>
-        <a href="/til/#ssh-l">
-          <span>用 ssh -L 把远程端口搬到本地</span>
-          <time datetime="2026-10-24">10-24</time>
-        </a>
-      </li>
-      <li>
-        <a href="/til/#git-log-s">
-          <span>找出是哪次提交动了这行代码</span>
-          <time datetime="2026-10-22">10-22</time>
-        </a>
-      </li>
-      <li>
-        <a href="/til/#http-server">
-          <span>一行命令临时起个静态服务</span>
-          <time datetime="2026-10-20">10-20</time>
-        </a>
-      </li>
-    </ul>
-    <p style="margin:18px 0 0;font-size:14px"><a href="/til/" style="text-decoration:none">全部笔记 →</a></p>
-    <p class="section-title">连载</p>
-    <ul class="list">
-      <li>
-        <a href="/novels/parcel-station/">
-          <span>快递站 · 丧尸爆发那晚，我把自己关进了学校快递站</span>
-          <time>已更新 2 章</time>
-        </a>
-      </li>
-    </ul>
-    <p style="margin:18px 0 0;font-size:14px"><a href="/novels/" style="text-decoration:none">去书城 →</a></p>
-    <p class="section-title">小玩意</p>
-    <div class="cards">
-      <a class="card" href="/tools/">
-        <h3>工具箱</h3>
-        <p>JSON 格式化、时间戳、Base64、密码生成、SHA-256、颜色转换、文本统计</p>
-      </a>
-      <a class="card" href="/games/">
-        <h3>小游戏</h3>
-        <p>2048、贪吃蛇、记忆翻牌、24 点，纯 JS 实现，手机上也能玩</p>
-      </a>
-    </div>
+    <!-- ============ 01 写 ============ -->
+    <section class="sec reveal" id="writing">
+      <div class="sec-head">
+        <span class="sec-no">01</span>
+        <h2 class="sec-title">写</h2>
+        <a class="sec-note" href="/posts/">全部文章 →</a>
+      </div>
 
-    <p class="section-title">关于这页</p>
-    <p style="color:var(--muted);font-size:15px;margin:0">
-      纯手写 HTML，托管在 GitHub Pages。没有框架、没有构建步骤、没有跟踪脚本。<br>
-      全部源码在 <a href="https://github.com/Tommy268/Tommy268.github.io">GitHub</a> 上。
-    </p>
+      <div class="posts">
+        <a class="post" href="/posts/build-this-site.html">
+          <span class="post-date">10-24</span>
+          <span class="post-title">这个网站是怎么搭起来的，以及踩的三个坑</span>
+          <span class="post-tag">建站</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post" href="/posts/git-commands.html">
+          <span class="post-date">10-18</span>
+          <span class="post-title">我每天在用的 10 个 Git 命令</span>
+          <span class="post-tag">Git</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post" href="/posts/start-writing.html">
+          <span class="post-date">10-09</span>
+          <span class="post-title">为什么开始写东西，以及怎么不至于放弃</span>
+          <span class="post-tag">写作</span>
+          <span class="post-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ 02 连载 ============ -->
+    <section class="sec reveal" id="novel">
+      <div class="sec-head">
+        <span class="sec-no">02</span>
+        <h2 class="sec-title">连载</h2>
+        <a class="sec-note" href="/novels/">书城 →</a>
+      </div>
+
+      <div class="feature">
+        <div class="cover">
+          <span class="cover-tag">连载中</span>
+          <span class="cover-title">快递站</span>
+          <span class="cover-no">NO.01</span>
+        </div>
+        <div>
+          <h3>快递站</h3>
+          <p class="feat-meta">末日 · 校园 · 日常流 · 已更新 2 章，预计 200 章 · 约 6800 字</p>
+          <p>
+            丧尸爆发那晚，我去快递站拿一个明天要用的包裹。十一点零七分，卷帘门降到了三分之二，
+            外面有人在尖叫。等我反应过来，电动门已经落到底，锁舌咔哒一声，
+            把我和两千多个包裹一起关在了里面。
+          </p>
+          <p style="color:var(--muted)">
+            白天我拆别人的包裹活下去，晚上透过监控看着曾经的校园。
+          </p>
+          <a class="btn primary" href="/novels/parcel-station/">从第一章开始读</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 记 ============ -->
+    <section class="sec reveal" id="notes">
+      <div class="sec-head">
+        <span class="sec-no">03</span>
+        <h2 class="sec-title">记</h2>
+        <a class="sec-note" href="/til/">全部笔记 →</a>
+      </div>
+
+      <div class="posts">
+        <a class="post" href="/til/#ssh-l">
+          <span class="post-date">10-24</span>
+          <span class="post-title">用 ssh -L 把远程端口搬到本地</span>
+          <span class="post-tag">TIL</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post" href="/til/#git-log-s">
+          <span class="post-date">10-22</span>
+          <span class="post-title">找出是哪次提交动了这行代码</span>
+          <span class="post-tag">TIL</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post" href="/til/#http-server">
+          <span class="post-date">10-20</span>
+          <span class="post-title">一行命令临时起个静态服务</span>
+          <span class="post-tag">TIL</span>
+          <span class="post-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ 04 玩 ============ -->
+    <section class="sec reveal" id="play">
+      <div class="sec-head">
+        <span class="sec-no">04</span>
+        <h2 class="sec-title">玩</h2>
+        <span class="sec-note">全部在浏览器本地运行</span>
+      </div>
+
+      <div class="play-grid">
+        <div class="play-col">
+          <h3>工具 · 7 个</h3>
+          <div class="chips">
+            <a class="chip" href="/tools/">JSON 格式化</a>
+            <a class="chip" href="/tools/">时间戳转换</a>
+            <a class="chip" href="/tools/">Base64 编解码</a>
+            <a class="chip" href="/tools/">密码生成</a>
+            <a class="chip" href="/tools/">SHA-256</a>
+            <a class="chip" href="/tools/">颜色转换</a>
+            <a class="chip" href="/tools/">文本统计</a>
+          </div>
+        </div>
+
+        <div class="play-col">
+          <h3>游戏 · 9 个</h3>
+          <div class="chips">
+            <a class="chip" href="/games/2048.html">2048</a>
+            <a class="chip" href="/games/snake.html">贪吃蛇</a>
+            <a class="chip" href="/games/memory.html">记忆翻牌</a>
+            <a class="chip" href="/games/24.html">24 点</a>
+            <a class="chip" href="/games/hextris.html">Hextris <small>开源</small></a>
+            <a class="chip" href="/games/hexgl.html">HexGL <small>3D</small></a>
+            <a class="chip" href="/games/tetris.html">俄罗斯方块 <small>开源</small></a>
+            <a class="chip" href="/games/racer.html">赛车 <small>开源</small></a>
+            <a class="chip" href="/games/breakout.html">打砖块 <small>开源</small></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 关于 ============ -->
+    <section class="sec sec-tight reveal" id="about">
+      <div class="sec-head">
+        <span class="sec-no">05</span>
+        <h2 class="sec-title">关于</h2>
+      </div>
+
+      <div class="about-grid">
+        <div>
+          <p>
+            我在做后端，日常在 Python 和 Go 之间切换。喜欢把复杂的东西拆开看，
+            然后把拆的过程写下来——因为写下来才算真的想清楚了。
+          </p>
+          <p style="color:var(--muted)">
+            这个站是手写的静态页面，托管在 GitHub Pages。
+            没有框架、没有构建步骤、没有统计脚本，源码全在 GitHub 上。
+          </p>
+        </div>
+        <div class="about-links">
+          <a href="/about.html">关于我 <span>自我介绍 →</span></a>
+          <a href="https://github.com/Tommy268">GitHub <span>@Tommy268 →</span></a>
+          <a href="https://github.com/Tommy268/Tommy268.github.io">本站源码 <span>Tommy268.github.io →</span></a>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
-    <span>© 2026 Tommy</span>
-    <span><a href="https://github.com/Tommy268/Tommy268.github.io">源码</a> · GitHub Pages</span>
+    <div class="home-foot">
+      <div>
+        <div class="foot-brand">
+          <span class="brand-mark">T</span>
+          <span>Tommy</span>
+        </div>
+        <p class="foot-note">
+          手写静态页面，托管在 GitHub Pages。<br>
+          没有框架、没有构建步骤、没有统计脚本。
+        </p>
+      </div>
+      <div>
+        <h4>写</h4>
+        <ul>
+          <li><a href="/posts/">文章</a></li>
+          <li><a href="/novels/">连载小说</a></li>
+          <li><a href="/til/">笔记 TIL</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>玩</h4>
+        <ul>
+          <li><a href="/tools/">工具箱</a></li>
+          <li><a href="/games/">游戏</a></li>
+          <li><a href="https://github.com/Tommy268">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
 
 </div>
+
+<script src="/assets/home.js"></script>
 </body>
 </html>
